@@ -9,10 +9,16 @@ class Led:
         self.update()
 
     def on(self):
+        if self.state == GPIO.HIGH:
+            return self.get()
+
         self.state = GPIO.HIGH
         return self.update()
 
     def off(self):
+        if self.state == GPIO.LOW:
+            return self.get()
+
         self.state = GPIO.LOW
         return self.update()
 
