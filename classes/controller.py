@@ -12,10 +12,10 @@ class Controller:
         for led_ in LEDS:
             self.leds[led_] = Led(led_)
 
-    def toggleAll(self):
+    def toggle_all(self):
         for key, item_ in self.leds.items():
             item_.toggle()
-        return self.getAll()
+        return self.get_all()
 
     def toggle(self, id_):
         if id_ in self.leds:
@@ -23,10 +23,10 @@ class Controller:
 
         return False
 
-    def onAll(self):
+    def on_all(self):
         for key, item_ in self.leds.items():
             item_.on()
-        return self.getAll()
+        return self.get_all()
 
     def on(self, id_):
         if id_ in self.leds:
@@ -34,10 +34,10 @@ class Controller:
 
         return False
 
-    def offAll(self):
+    def off_all(self):
         for key, item_ in self.leds.items():
             item_.off()
-        return self.getAll()
+        return self.get_all()
 
     def off(self, id_):
         if id_ in self.leds:
@@ -45,7 +45,7 @@ class Controller:
 
         return False
 
-    def getAll(self):
+    def get_all(self):
         data = []
         for key, item_ in self.leds.items():
             data.append(item_.get())
