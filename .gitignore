@@ -102,3 +102,10 @@ ENV/
 
 # vs-code
 .vscode/
+
+# PHPStorm
+.idea/
+
+# Node
+node_modules/
+*.lock
