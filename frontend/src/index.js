@@ -6,7 +6,9 @@ import App from './js/containers/app';
 
 import configureStore from './js/redux/configureStore';
 
-const store = configureStore();
+const store = configureStore(
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
 
 const root = document.querySelector('#app');
 ReactDOM.render(
