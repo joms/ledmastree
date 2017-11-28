@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import {fetchLeds} from "../redux/actions/index";
+import LedContainer from './ledContainer';
+
+import { fetchLeds } from "../redux/actions/index";
 
 
 class App extends Component {
@@ -14,11 +16,10 @@ class App extends Component {
 
     render() {
         const { leds } = this.props;
-        console.log(leds);
 
         return (
             <MuiThemeProvider>
-                <h1>Hello, world</h1>
+                <LedContainer leds={leds} />
             </MuiThemeProvider>
         );
     }
@@ -26,8 +27,6 @@ class App extends Component {
 
 function mapStateToProps(state) {
     const leds = state.leds;
-
-    console.log(state);
 
     return {
         leds
