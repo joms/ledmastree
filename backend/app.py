@@ -1,15 +1,18 @@
 #!flask/bin/python
 import atexit
 from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
 from RPi import GPIO
 from classes.controller import Controller as LEDController
 
 APP = Flask(__name__)
+CORS(APP, support_credentials=True)
 
 
 CONTROLLER = LEDController()
 
 @APP.route('/ledmastree/api/v1/leds', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_leds():
     return jsonify(CONTROLLER.get_all())
 
