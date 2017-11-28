@@ -1,17 +1,37 @@
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import MyAwesomeReactComponent from '../components/awesome';
+import {fetchLeds} from "../redux/actions/index";
+
 
 class App extends Component {
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(fetchLeds());
+    }
+
     render() {
+        const { leds } = this.props;
+        console.log(leds);
+
         return (
             <MuiThemeProvider>
-                <MyAwesomeReactComponent/>
+                <h1>Hello, world</h1>
             </MuiThemeProvider>
         );
     }
 }
 
-export default App;
+function mapStateToProps(state) {
+    const leds = state.leds;
+
+    console.log(state);
+
+    return {
+        leds
+    };
+}
+
+export default connect(mapStateToProps)(App);

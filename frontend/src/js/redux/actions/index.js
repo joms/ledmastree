@@ -12,14 +12,14 @@ export function requestLeds() {
 export function receiveLeds(json) {
     return {
         type: RECEIVE_LEDS,
-        photos: json,
+        leds: json,
     };
 }
 
 export function fetchLeds() {
     return dispatch => {
         dispatch(requestLeds());
-        return axios.get('http://192.168.3.10/ledmastree/api/v1/leds')
+        return axios.get('http://192.168.3.10:5000/ledmastree/api/v1/leds')
             .then(response => response.data)
             .then(json => dispatch(receiveLeds(json)));
     }
