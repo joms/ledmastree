@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader'
-import App from './js/containers/app';
+import App from './js/app';
 
 import configureStore from './js/redux/configureStore';
 
@@ -22,5 +22,5 @@ ReactDOM.render(
 
 // Webpack Hot Module Replacement API
 if (module.hot) {
-    module.hot.accept('./js/containers/app', () => { render(App) })
+    module.hot.accept('./js/app', () => { render(App) })
 }
