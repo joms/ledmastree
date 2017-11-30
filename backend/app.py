@@ -45,12 +45,16 @@ def off_led(led_id):
     return jsonify(CONTROLLER.off(led_id))
 
 @APP.route('/ledmastree/api/v1/pwm/<string:state>', methods=['GET'])
-def set_pwm_led(state):
+def set_pwm_leds(state):
     return jsonify(CONTROLLER.set_pwm_leds(state))
 
-@APP.route('/ledmastree/api/v1/pwm/<string:state>/<int:led_id>', methods=['GET'])
-def set_pwm_leds(state, led_id):
-    return jsonify(CONTROLLER.set_pwm_led(state, led_id))
+@APP.route('/ledmastree/api/v1/patterns', methods=['GET'])
+def get_patterns():
+    return jsonify(CONTROLLER.get_patterns())
+
+@APP.route('/ledmastree/api/v1/patterns/<int:pattern_id>/<string:command>', methods=['GET'])
+def set_pattern(pattern_id, command):
+    return jsonify(CONTROLLER.set_pattern(pattern_id, command))
 
 if __name__ == '__main__':
     APP.run(debug=True)

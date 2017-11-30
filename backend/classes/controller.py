@@ -9,9 +9,10 @@ class Controller:
         GPIO.setmode(GPIO.BCM)
 
         self.leds = dict()
+        self.pwm = False
 
         for led_ in LEDS:
-            self.leds[led_] = Led(led_)
+            self.leds[led_] = Led(led_, self.pwm)
 
         self.patterns = Patterns(self.leds)
 
@@ -48,17 +49,35 @@ class Controller:
 
         return False
 
-    def set_pwm_led(self, state, id_):
-        s = state == 'on'
-        if id_ in self.leds:
-            return self.leds[id_].setPwm(s)
-        
-        return False
-
     def set_pwm_leds(self, state):
+        s = state == 'on'
+        if (s):
+            if (self.pwm):
+                return self.get_all()
+            for key, item_ in self.leds.items():
+                item_.setPwm(s)
+        else:
+            if (not self.pwm):
+                return self.get_all()
+            for key, item_ in self.leds.items():
+                item_.setPwm(s)
+        
+        self.pwm = s
+        return self.get_all()
+
+
         for key, item_ in self.leds.items():
             item_.setPwm(state)
         return self.get_all()
+
+    def get_patterns(self):
+        return self.patterns.patternList()
+
+    def set_pattern(self, pattern_id, command):
+        if (command == 'on'):
+            self.patterns.start(pattern_id)
+        else:
+            self.patterns.stop()
 
     def get_all(self):
         data = []

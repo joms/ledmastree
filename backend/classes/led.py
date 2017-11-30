@@ -2,7 +2,7 @@ from RPi import GPIO
 import time
 
 class Led:
-    def __init__(self, id_, pwm = False):
+    def __init__(self, id_, pwm):
         GPIO.setup(id_, GPIO.OUT)
 
         if (pwm):
@@ -19,13 +19,22 @@ class Led:
             if (self.pwm):
                 return self.get()
             self.pwm = GPIO.PWM(self.id_, 50)
-            self.pwm.start(0)
+            if (self.state == GPIO.HIGH):
+                self.pwm.start(100)
+            else:
+                self.pwm.start(0)
         else:
             if (not self.pwm):
                 return self.get()
             self.pwm.stop()
             self.pwm = False
         return self.get()
+
+    def setDutyCycle(self, dc):
+        if self.pwm:
+            self.pwm.ChangeDutyCycle(dc)
+        else:
+            return False
 
     def on(self):
         if self.state == GPIO.HIGH:
@@ -37,7 +46,8 @@ class Led:
     def off(self):
         if self.state == GPIO.LOW:
             return self.get()
-            
+      
+        self.state = GPIO.LOW
         return self.update()
 
     def toggle(self):
