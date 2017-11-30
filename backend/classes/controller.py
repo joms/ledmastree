@@ -13,6 +13,7 @@ class Controller:
 
         for led_ in LEDS:
             self.leds[led_] = Led(led_, self.pwm)
+            self.leds[led_].on()
 
         self.patterns = Patterns(self.leds)
 
