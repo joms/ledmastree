@@ -28,7 +28,7 @@ export function updateLed(json) {
 export function fetchLeds() {
     return dispatch => {
         dispatch(requestLeds());
-        return axios.get('http://192.168.3.10:5000/ledmastree/api/v1/leds')
+        return axios.get('ledmastree/api/v1/leds')
             .then(response => response.data)
             .then(json => dispatch(receiveLeds(json)));
     }
@@ -36,7 +36,7 @@ export function fetchLeds() {
 
 export function setLedState(id, state) {
     return dispatch => {
-        return axios.get(`http://192.168.3.10:5000/ledmastree/api/v1/${state ? 'on' : 'off'}/${id}`)
+        return axios.get(`/ledmastree/api/v1/${state ? 'on' : 'off'}/${id}`)
             .then(response => response.data)
             .then(json => dispatch(updateLed(json)));
     }
