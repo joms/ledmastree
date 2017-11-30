@@ -44,6 +44,14 @@ def off_leds():
 def off_led(led_id):
     return jsonify(CONTROLLER.off(led_id))
 
+@APP.route('/ledmastree/api/v1/pwm/<string:state>', methods=['GET'])
+def set_pwm_leds(state):
+    return jsonify(CONTROLLER.pwm_all(state))
+
+@APP.route('/ledmastree/api/v1/pwm/<string:state>/<int:led_id>', methods=['GET'])
+def set_pwm_leds(state, led_id):
+    return jsonify(CONTROLLER.pwm(state, led_id))
+
 if __name__ == '__main__':
     APP.run(debug=True)
 

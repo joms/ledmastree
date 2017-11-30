@@ -48,6 +48,17 @@ class Controller:
 
         return False
 
+    def set_pwm_led(self, state):
+        if id_ in self.leds:
+            return self.leds[id_].setPwm(state)
+        
+        return False
+
+    def set_pwm_leds(self, state):
+        for key, item_ in self.leds.items():
+            item_.setPwm(state)
+        return self.get_all()
+
     def get_all(self):
         data = []
         for key, item_ in self.leds.items():
