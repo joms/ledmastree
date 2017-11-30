@@ -14,6 +14,17 @@ class Led:
         self.state = GPIO.LOW
         self.update()
 
+    def setPwm(self, state):
+        if (state):
+            if (self.pwm):
+                return self.get()
+            self.pwm = GPIO.PWM(self.id_, 50)
+        else:
+            if (not self.pwm):
+                return self.get()
+            self.pwm = False
+        return self.get()
+
     def on(self):
         if self.state == GPIO.HIGH:
             return self.get()
@@ -53,6 +64,7 @@ class Led:
         return {
             'id': self.id_,
             'state': self.state
+            'pwm': !!self.pwm
         }
 
     def update(self):
