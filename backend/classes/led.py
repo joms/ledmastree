@@ -19,9 +19,11 @@ class Led:
             if (self.pwm):
                 return self.get()
             self.pwm = GPIO.PWM(self.id_, 50)
+            self.pwm.start(0)
         else:
             if (not self.pwm):
                 return self.get()
+            self.pwm.stop()
             self.pwm = False
         return self.get()
 
@@ -51,6 +53,7 @@ class Led:
         return self.toggle()
 
     def pwmOn(self):
+        self.pwm.start(0)
         for dc in range(0, 101, 5):
             self.pwm.ChangeDutyCycle(dc)
             time.sleep(0.1)
@@ -59,12 +62,18 @@ class Led:
         for dc in range(100, -1, -5):
             self.pwm.ChangeDutyCycle(dc)
             time.sleep(0.1)
+        self.pwm.stop()
 
     def get(self):
+        if (not self.pwm):
+            pwm = self.pwm
+        else:
+            pwm = True
+
         return {
             'id': self.id_,
-            'state': self.state
-            'pwm': !!self.pwm
+            'state': self.state,
+            'pwm': pwm
         }
 
     def update(self):

@@ -12,13 +12,15 @@ class Patterns:
         t.start()
 
     def randomFlash(self, e, interval):
+        print("patterns!")
         for key, item_ in self.ledList.items():
             item_.on()
 
         while not e.isSet():
-            led = random.choice(list(self.ledList))
-            self.ledList[led].off()
-            time.sleep(interval)
-            self.ledList[led].on()
-            if (not e.wait(interval)):
+            for key, led in self.ledList.items():
+                led.off()
+                time.sleep(interval)
+                led.on()
+                if (not e.wait(interval)):
+                    time.sleep(interval)
                 time.sleep(interval)

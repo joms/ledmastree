@@ -48,9 +48,10 @@ class Controller:
 
         return False
 
-    def set_pwm_led(self, state):
+    def set_pwm_led(self, state, id_):
+        s = state == 'on'
         if id_ in self.leds:
-            return self.leds[id_].setPwm(state)
+            return self.leds[id_].setPwm(s)
         
         return False
 
