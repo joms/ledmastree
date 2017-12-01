@@ -30,12 +30,6 @@ class Led:
             self.pwm = False
         return self.get()
 
-    def setDutyCycle(self, dc):
-        if self.pwm:
-            self.pwm.ChangeDutyCycle(dc)
-        else:
-            return False
-
     def on(self):
         if self.state == GPIO.HIGH:
             return self.get()
