@@ -66,7 +66,6 @@ class Led:
         for dc in range(100, -1, -5):
             self.pwm.ChangeDutyCycle(dc)
             time.sleep(0.1)
-        self.pwm.stop()
 
     def get(self):
         if (not self.pwm):
