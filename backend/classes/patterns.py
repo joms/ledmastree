@@ -1,7 +1,7 @@
 import threading
 import time
+import math
 from RPi import GPIO
-import random
 
 PATTERNLIST = [
     {
@@ -31,7 +31,25 @@ PATTERNLIST = [
             "type": "int"
         }],
         "trigger": "toggleOnePattern"
-    }  
+    }, {
+        "id": 3,
+        "name": "Absint",
+        "description": "Apply a random sine effect to all PWM enabled LEDs",
+        "parameters": [{
+            "name": "frequence",
+            "type": "float"
+        }],
+        "trigger": "absint"
+    }, {
+        "id": 4,
+        "name": "sinTree",
+        "description": "Apply an even sine effect to all PWM enabled LEDs",
+        "parameters": [{
+            "name": "frequence",
+            "type": "float"
+        }],
+        "trigger": "sinTree"
+    }
 ]
 
 class Patterns:
@@ -76,6 +94,23 @@ class Patterns:
                 e.wait(speed)
                 led.off()
                 e.wait(speed)
+
+    def absint(self, e, freq = 1):
+        while not e.isSet():
+            for key, led in self.ledList.items():
+                if (led.pwm):
+                    #TODO Implement frequency
+                    dc = math.fabs(math.sin(time.time() + key) * 100)
+                    led.pwm.ChangeDutyCycle(dc)
+            e.wait(.01)
+
+    def sinTree(self, e, freq = 1000):
+        while not e.isSet():
+            for key, led in self.ledList.items():
+                if (led.pwm):
+                    dc = math.fabs(math.sin(time.time()) * 100)
+                    led.pwm.ChangeDutyCycle(dc)
+            e.wait(.01)
 
     def start(self, id_):
         pattern = PATTERNLIST[id_]
