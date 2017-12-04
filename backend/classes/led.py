@@ -1,3 +1,4 @@
+import threading
 from RPi import GPIO
 import time
 
@@ -56,16 +57,16 @@ class Led:
         time.sleep(duration)
         return self.toggle()
 
-    def pwmOn(self):
+    def _pwmOn(self):
         self.pwm.start(0)
         for dc in range(0, 101, 5):
             self.pwm.ChangeDutyCycle(dc)
-            time.sleep(0.1)
+            time.sleep(0.01)
 
-    def pwmOff(self):
+    def _pwmOff(self):
         for dc in range(100, -1, -5):
             self.pwm.ChangeDutyCycle(dc)
-            time.sleep(0.1)
+            time.sleep(0.01)
 
     def get(self):
         if (not self.pwm):
@@ -82,9 +83,11 @@ class Led:
     def update(self):
         if (self.pwm):
             if (self.state == GPIO.HIGH):
-                self.pwmOn()
+                thread = threading.Thread(target=self._pwmOn, args=())
+                thread.start()
             elif (self.state == GPIO.LOW):
-                self.pwmOff
+                thread = threading.Thread(target=self._pwmOff, args=())
+                thread.start()
         else:
             GPIO.output(self.id_, self.state)
 
