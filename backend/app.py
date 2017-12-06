@@ -41,7 +41,7 @@ def on_leds():
 @APP.route('/ledmastree/api/v1/on/<int:led_id>', methods=['GET'])
 def on_led(led_id):
     """Turn a single LED on"""
-    return jsonify(CONTROLLER.on(led_id))
+    return jsonify(CONTROLLER.on_led(led_id))
 
 @APP.route('/ledmastree/api/v1/off', methods=['GET'])
 def off_leds():

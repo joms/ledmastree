@@ -12,7 +12,7 @@ PATTERNLIST = [
             "name": "speed",
             "type": "int"
         }],
-        "trigger": "randomFlash"
+        "trigger": "random_flash"
     }, {
         "id": 1,
         "name": "Toggle",
@@ -21,7 +21,7 @@ PATTERNLIST = [
             "name": "speed",
             "type": "int"
         }],
-        "trigger": "togglePattern"
+        "trigger": "toggle_pattern"
     }, {
         "id": 2,
         "name": "Toggle One",
@@ -30,7 +30,7 @@ PATTERNLIST = [
             "name": "speed",
             "type": "int"
         }],
-        "trigger": "toggleOnePattern"
+        "trigger": "toggle_one_pattern"
     }, {
         "id": 3,
         "name": "Absint",
@@ -48,97 +48,71 @@ PATTERNLIST = [
             "name": "frequence",
             "type": "float"
         }],
-        "trigger": "sinTree"
+        "trigger": "sin_tree"
     }
 ]
 
 class Patterns:
-    """Led pattern class"""
-    def __init__(self, ledList):
-        self.ledList = ledList
+    """Led pattern controller class"""
+    def __init__(self, led_list):
+        self.led_list = led_list
 
-        self.activePattern = False
-        self.eventThread = False
-        self.thread = False
+    def get_pattern(self, id_):
+        """Get pattern function by id"""
+        return PATTERNLIST[id_]
 
-    def randomFlash(self, e, interval):
+    def random_flash(self, e, interval):
         """Flash LEDs in a seemingly random sequence"""
-        for key, item_ in self.ledList.items():
+        for key, item_ in self.led_list.items():
             item_.on()
 
         while not e.isSet():
-            for key, led in self.ledList.items():
+            for key, led in self.led_list.items():
                 led.off()
                 time.sleep(interval)
                 led.on()
                 e.wait(interval)
 
-    def togglePattern(self, e, speed):
+    def toggle_pattern(self, e, speed):
         """Toggle LEDs in sequences"""
-        for key, item_ in self.ledList.items():
+        for key, item_ in self.led_list.items():
             item_.on()
 
         while not e.isSet():
-            for key, led in self.ledList.items():
+            for key, led in self.led_list.items():
                 led.on()
                 e.wait(speed)
-            for key, led in self.ledList.items():
+            for key, led in self.led_list.items():
                 led.off()
                 e.wait(speed)
 
-    def toggleOnePattern(self, e, speed):
+    def toggle_one_pattern(self, e, speed):
         """Toggle a single LED"""
-        for key, item_ in self.ledList.items():
+        for key, item_ in self.led_list.items():
             item_.off()
 
         while not e.isSet():
-            for key, led in self.ledList.items():
+            for key, led in self.led_list.items():
                 led.on()
                 e.wait(speed)
                 led.off()
                 e.wait(speed)
 
-    def absint(self, e, freq = 1):
+    def absint(self, e, freq=1):
         """Run a sine effect over the LEDs with key as parameter"""
         while not e.isSet():
-            for key, led in self.ledList.items():
+            for key, led in self.led_list.items():
                 if led.pwm:
                     #TODO Implement frequency
                     dc = math.fabs(math.sin(time.time() + key) * 100)
                     led.pwm.ChangeDutyCycle(dc)
             e.wait(.01)
 
-    def sinTree(self, e, freq = 1000):
+    def sin_tree(self, e, freq=1000):
         """Apply a single sine effect to all LEDs"""
         while not e.isSet():
-            for key, led in self.ledList.items():
+            for key, led in self.led_list.items():
                 if led.pwm:
                     dc = math.fabs(math.sin(time.time()) * 100)
                     led.pwm.ChangeDutyCycle(dc)
             e.wait(.01)
-
-    def start(self, id_):
-        """Start a pattern"""
-        pattern = PATTERNLIST[id_]
-        func = getattr(self, pattern["trigger"])
-
-        if self.eventThread:
-            self.stop()
-
-        self.eventThread = threading.Event()
-        self.thread = threading.Thread(name='non-block', target=func, args=(self.eventThread, .1))
-        self.thread.start()
-
-        self.activePattern = pattern
-        return self.activePattern
-
-    def stop(self):
-        """Stop a pattern"""
-        if self.eventThread:
-            self.eventThread.set()
-            self.eventThread = False
-            self.thread = False
-
-    def patternList(self):
-        """Get the patternlist"""
-        return PATTERNLIST

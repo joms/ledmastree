@@ -15,13 +15,13 @@ class Led:
 
         self.id_ = id_
         self.state = GPIO.LOW
-        self.update()
+        self.update_status()
 
-    def setPwm(self, state):
+    def set_pwm(self, state):
         """Enable or disable PWM on the pin"""
         if state:
             if self.pwm:
-                return self.get()
+                return self.get_status()
             self.pwm = GPIO.PWM(self.id_, 50)
             if self.state == GPIO.HIGH:
                 self.pwm.start(100)
@@ -29,52 +29,52 @@ class Led:
                 self.pwm.start(0)
         else:
             if not self.pwm:
-                return self.get()
+                return self.get_status()
             self.pwm.stop()
             self.pwm = False
-        return self.get()
+        return self.get_status()
 
-    def on(self):
+    def led_on(self):
         """Turn LED on"""
         if self.state == GPIO.HIGH:
-            return self.get()
+            return self.get_status()
 
         self.state = GPIO.HIGH
-        return self.update()
+        return self.update_status()
 
-    def off(self):
+    def led_off(self):
         """Turn LED off"""
         if self.state == GPIO.LOW:
-            return self.get()
+            return self.get_status()
 
         self.state = GPIO.LOW
-        return self.update()
+        return self.update_status()
 
-    def toggle(self):
+    def led_toggle(self):
         """Set LED to opposite state"""
         if self.state == GPIO.LOW:
             self.state = GPIO.HIGH
         else:
             self.state = GPIO.LOW
-        return self.update()
+        return self.update_status()
 
-    def blink(self, duration=.5):
+    def led_blink(self, duration=.5):
         """Blink a LED"""
-        self.toggle()
+        self.led_toggle()
         time.sleep(duration)
-        return self.toggle()
+        return self.led_toggle()
 
-    def _pwmOn(self):
+    def _pwm_on(self):
         for dc in range(0, 101, 5):
             self.pwm.ChangeDutyCycle(dc)
             time.sleep(0.01)
 
-    def _pwmOff(self):
+    def _pwm_off(self):
         for dc in range(100, -1, -5):
             self.pwm.ChangeDutyCycle(dc)
             time.sleep(0.01)
 
-    def get(self):
+    def get_status(self):
         """Get LED status"""
         if not self.pwm:
             pwm = self.pwm
@@ -87,16 +87,16 @@ class Led:
             'pwm': pwm
         }
 
-    def update(self):
+    def update_status(self):
         """Update the LED according to state"""
         if self.pwm:
             if self.state == GPIO.HIGH:
-                thread = threading.Thread(target=self._pwmOn, args=())
+                thread = threading.Thread(target=self._pwm_on, args=())
                 thread.start()
             elif self.state == GPIO.LOW:
-                thread = threading.Thread(target=self._pwmOff, args=())
+                thread = threading.Thread(target=self._pwm_off, args=())
                 thread.start()
         else:
             GPIO.output(self.id_, self.state)
 
-        return self.get()
+        return self.get_status()
