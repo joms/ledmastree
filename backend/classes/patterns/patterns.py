@@ -61,6 +61,10 @@ class Patterns:
         """Get pattern function by id"""
         return PATTERNLIST[id_]
 
+    def get_patterns(self):
+        """Get all patterns"""
+        return PATTERNLIST
+
     def random_flash(self, e, interval):
         """Flash LEDs in a seemingly random sequence"""
         for key, item_ in self.led_list.items():

@@ -77,7 +77,7 @@ class Controller:
 
     def get_patterns(self):
         """Get all available patterns"""
-        return self.patterns.pattern_list()
+        return self.patterns.patterns.get_patterns()
 
     def set_pattern(self, pattern_id, command):
         """Set status of a pattern"""
