@@ -68,38 +68,38 @@ class Patterns:
     def random_flash(self, e, interval):
         """Flash LEDs in a seemingly random sequence"""
         for key, item_ in self.led_list.items():
-            item_.on()
+            item_.led_on()
 
         while not e.isSet():
             for key, led in self.led_list.items():
-                led.off()
+                led.led_off()
                 time.sleep(interval)
-                led.on()
+                led.led_on()
                 e.wait(interval)
 
     def toggle_pattern(self, e, speed):
         """Toggle LEDs in sequences"""
         for key, item_ in self.led_list.items():
-            item_.on()
+            item_.led_on()
 
         while not e.isSet():
             for key, led in self.led_list.items():
-                led.on()
+                led.led_on()
                 e.wait(speed)
             for key, led in self.led_list.items():
-                led.off()
+                led.led_off()
                 e.wait(speed)
 
     def toggle_one_pattern(self, e, speed):
         """Toggle a single LED"""
         for key, item_ in self.led_list.items():
-            item_.off()
+            item_.led_off()
 
         while not e.isSet():
             for key, led in self.led_list.items():
-                led.on()
+                led.led_on()
                 e.wait(speed)
-                led.off()
+                led.led_off()
                 e.wait(speed)
 
     def absint(self, e, freq=1):
