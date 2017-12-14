@@ -57,8 +57,10 @@ $ sudo ln -s /etc/nginx/sites-available/proxy /etc/nginx/sites-enabled/proxy
 $ sudo service nginx reload
 ```
 
-# Future plans
+# TODO
 
 - ~~Pattern support~~
+- Proper frontend
+- GET parameter support
 - Twitter
 - Alexa implementation
