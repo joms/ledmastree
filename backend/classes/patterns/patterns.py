@@ -68,7 +68,7 @@ class Patterns:
     def random_flash(self, e, interval):
         """Flash LEDs in a seemingly random sequence"""
         for key, item_ in self.led_list.items():
-            item_.led_onon()
+            item_.led_on()
 
         while not e.isSet():
             for key, led in self.led_list.items():
