@@ -1,7 +1,7 @@
 """LED pattern controller"""
 import threading
 import time
-from patterns import Patterns
+from .patterns import Patterns
 
 class Controller:
     """Led pattern controller class"""
