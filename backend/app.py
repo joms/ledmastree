@@ -68,6 +68,11 @@ def set_pattern(pattern_id, command):
     """Activate or deactivate a pattern"""
     return jsonify(CONTROLLER.set_pattern(pattern_id, command))
 
+@APP.route('/ledmastree/api/v1/twitter/<string:state>', methods=['GET'])
+def twitter(state):
+    """Activate or deactivate twitter integration"""
+    return jsonify(CONTROLLER.set_twitter(state))
+
 if __name__ == '__main__':
     APP.run(debug=True)
 
