@@ -62,5 +62,5 @@ $ sudo service nginx reload
 - ~~Pattern support~~
 - Proper frontend
 - GET parameter support
-- Twitter
+- ~~Twitter~~ Inspired by [this](https://www.reddit.com/r/raspberry_pi/comments/7hunue/i_made_twitter_powered_christmas_lights_any_time/)
 - Alexa implementation
