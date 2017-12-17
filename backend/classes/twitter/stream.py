@@ -24,7 +24,7 @@ class Stream(TwythonStreamer):
             for key, item_ in self.led_list.items():
                 if item_.pwm:
                     item_.pwm.ChangeDutyCycle(self.brightness)
-            sleep(.01)
+            sleep(.02)
         
     def on_success(self, data):
         """success handler for twtter stream"""
