@@ -13,17 +13,6 @@ $ cd ../frontend
 $ npm install && npm build
 ```
 
-## Autostart
-
-It's useful if the backend would start when your Raspberry PI boots. This could be done in the following way:
-
-```
-$ chmod +x /home/pi/autostart.sh
-$ crontab -e
-```
-
-Add the following line to your cron file: `@reboot sh /home/pi/launch-backend.sh >/home/pi/logs/cronlog 2>&1`
-
 # Usage
 
 To run the Flask backend you need to define the application path before it.
@@ -34,6 +23,8 @@ $ python3 -m flask run --host=0.0.0.0
 ```
 
 You can now access the API on your Raspberry PI through port 5000: http://localhost:5000/ledmastree/api/v1/leds
+
+# Extra
 
 ## nginx
 
@@ -56,6 +47,19 @@ server {
 $ sudo ln -s /etc/nginx/sites-available/proxy /etc/nginx/sites-enabled/proxy
 $ sudo service nginx reload
 ```
+
+
+## Autostart
+
+It's useful if the backend would start when your Raspberry PI boots. This could be done in the following way:
+
+```
+$ chmod +x /home/pi/ledmastree/autostart.sh
+$ crontab -e
+```
+
+Add the following line to your cron file: `@reboot sh /home/pi/launch-backend.sh >/home/pi/ledmastree/logs/cronlog 2>&1`   
+This will also log the output to `/home/pi/ledmastree/logs/cronlog` for debugging.
 
 # TODO
 
