@@ -3,7 +3,7 @@
 
 # Installation
 
-It is assumed that python3 and nodejs is already installed.
+It is assumed that python3 (python3 is installed in Raspbian by default) and [nodejs](http://thisdavej.com/beginners-guide-to-installing-node-js-on-a-raspberry-pi/#install-node) is already installed.
 
 ```
 $ git clone https://github.com/joms/ledmastree.git
