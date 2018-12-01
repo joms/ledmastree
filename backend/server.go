@@ -55,24 +55,6 @@ func main() {
 		return c.String(http.StatusOK, resOk)
 	})
 
-	
-
-	e.GET("/toggle", func(c echo.Context) error {
-		ledcontroller.ToggleAll()
-		return c.String(http.StatusOK, resOk)
-	})
-
-	e.GET("/toggle/:id", func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("id"))
-		
-		if err != nil {
-			return c.String(http.StatusBadRequest, "Invalid input, id must be int")
-		}
-
-		ledcontroller.Toggle(id)
-		return c.String(http.StatusOK, resOk)
-	})
-
 	e.Logger.Fatal(e.Start(":1337"))
 
 }

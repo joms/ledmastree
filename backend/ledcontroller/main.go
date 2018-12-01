@@ -3,78 +3,41 @@ package ledcontroller
 import (
 	"fmt"
 	"os"
-
-	"github.com/stianeikeland/go-rpio/v4"
 )
 
-// LEDS All led pins
-var LEDS = []int{2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27}
+var ledList []led;
+
+// PWM Enable/disable fading algorithms
+var PWM = false
+var file *os.File
 
 func Init() {
-	if err := rpio.Open(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	f, err := os.OpenFile("/dev/pi-blaster", os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		panic(err)
 	}
 
-	for _, id := range LEDS {
-		pin := rpio.Pin(id)
-		pin.Output()
-	}
+	file = f
 }
 
 func OnAll() {
-	for _, id := range LEDS {
-		if ledIsValid(id) {
-			pin := rpio.Pin(id)
-			pin.High()
-		}
-	}
+	sendCommand("*=1")
 }
 
 func On(id int) {
-	if ledIsValid(id) {
-		pin := rpio.Pin(id)
-		pin.High()
-	}
+	sendCommand(fmt.Sprintf("%d=1", id))
 }
 
 func OffAll() {
-	for _, id := range LEDS {
-		if ledIsValid(id) {
-			pin := rpio.Pin(id)
-			pin.Low()
-		}
-	}
+	sendCommand("*=0")
 }
 
 func Off(id int) {
-	if ledIsValid(id) {
-		pin := rpio.Pin(id)
-		pin.Low()
-	}
+	sendCommand(fmt.Sprintf("%d=0", id))
 }
 
-func ToggleAll() {
-	for _, id := range LEDS {
-		if ledIsValid(id) {
-			pin := rpio.Pin(id)
-			pin.Toggle()
-		}
-	}
-}
-
-func Toggle(id int) {
-	if ledIsValid(id) {
-		pin := rpio.Pin(id)
-		pin.Toggle()
-	}
-}
-
-func ledIsValid(id int) bool {
-	for _, i := range LEDS {
-		if i == id {
-			return true
-		}
-	}
-	return false
+func sendCommand(command string) {
+    if _, err := file.WriteString(command+"\n"); err != nil {
+      panic(err)
+    }
 }
