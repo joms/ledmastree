@@ -4,12 +4,16 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"github.com/matryer/runner"
 )
 
 var ledList []led;
 
 // PWM Enable/disable fading algorithms
 var PWM = false
+
+var patternRoutine *runner.Task
+
 var file *os.File
 
 func Init() {
@@ -22,24 +26,28 @@ func Init() {
 }
 
 func OnAll() {
+	killPattern()
 	go func() {
 		fadeOnAll()
 	}()
 }
 
 func On(id int) {
+	killPattern()
 	go func() {
 		fadeOn(id)
 	}()
 }
 
 func OffAll() {
+	killPattern()
 	go func() {
 		fadeOffAll()
 	}()
 }
 
 func Off(id int) {
+	killPattern()
 	go func() {
 		fadeOff(id)
 	}()
@@ -80,5 +88,35 @@ func fadeOff(id int) {
 		val := float32(i) / 100.0
 		sendCommand(fmt.Sprintf("%d=%g", id, val))
 		time.Sleep(time.Second / 100)
+	}
+}
+
+func StartPattern(id int) {
+	switch id {
+	case 1:
+		patternRoutine = runner.Go(
+			(func(shouldStop runner.S) error {
+				// do setup work
+				defer func(){
+				  // do tear-down work
+				}()
+				for {
+					fadeOnAll()
+					fadeOffAll()
+			  
+					// periodically check to see if we should
+					// stop or not.
+					if shouldStop() {
+						break
+					}
+				}
+				return nil // no errors
+			}))
+	}
+}
+
+func killPattern() {
+	if patternRoutine.Running() {
+		patternRoutine.Stop()
 	}
 }

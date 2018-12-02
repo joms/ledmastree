@@ -6,6 +6,7 @@ require (
 	github.com/hashicorp/go-multierror v1.0.0 // indirect
 	github.com/labstack/echo v3.3.5+incompatible
 	github.com/labstack/gommon v0.2.8 // indirect
+	github.com/matryer/runner v0.0.0-20160928080134-cf38584beeb2
 	github.com/mattn/go-colorable v0.0.9 // indirect
 	github.com/mattn/go-isatty v0.0.4 // indirect
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect

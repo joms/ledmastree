@@ -55,6 +55,11 @@ func main() {
 		return c.String(http.StatusOK, resOk)
 	})
 
+	e.GET("/pulse", func(c echo.Context) error {
+		ledcontroller.StartPattern(1)
+		return c.String(http.StatusOK, resOk)
+	})
+
 	e.Logger.Fatal(e.Start(":1337"))
 
 }
