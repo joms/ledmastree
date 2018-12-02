@@ -3,6 +3,7 @@ package ledcontroller
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 var ledList []led;
@@ -21,23 +22,63 @@ func Init() {
 }
 
 func OnAll() {
-	sendCommand("*=1")
+	go func() {
+		fadeOnAll()
+	}()
 }
 
 func On(id int) {
-	sendCommand(fmt.Sprintf("%d=1", id))
+	go func() {
+		fadeOn(id)
+	}()
 }
 
 func OffAll() {
-	sendCommand("*=0")
+	go func() {
+		fadeOffAll()
+	}()
 }
 
 func Off(id int) {
-	sendCommand(fmt.Sprintf("%d=0", id))
+	go func() {
+		fadeOff(id)
+	}()
 }
 
 func sendCommand(command string) {
     if _, err := file.WriteString(command+"\n"); err != nil {
       panic(err)
     }
+}
+
+func fadeOnAll() {
+	for i := 0; i <= 100; i+=5 {
+		val := float32(i) / 100.0
+		sendCommand(fmt.Sprintf("*=%g", val))
+		time.Sleep(time.Second / 100)
+	}
+}
+
+func fadeOn(id int) {
+	for i := 0; i <= 100; i+=5 {
+		val := float32(i) / 100.0
+		sendCommand(fmt.Sprintf("%d=%g", id, val))
+		time.Sleep(time.Second / 100)
+	}
+}
+
+func fadeOffAll() {
+	for i := 100; i >= 0; i-=5 {
+		val := float32(i) / 100.0
+		sendCommand(fmt.Sprintf("*=%g", val))
+		time.Sleep(time.Second / 100)
+	}
+}
+
+func fadeOff(id int) {
+	for i := 100; i >= 0; i-=5 {
+		val := float32(i) / 100.0
+		sendCommand(fmt.Sprintf("%d=%g", id, val))
+		time.Sleep(time.Second / 100)
+	}
 }
