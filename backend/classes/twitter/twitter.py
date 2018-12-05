@@ -13,6 +13,7 @@ OAUTH_TOKEN_SECRET = os.environ.get('OAUTH_TOKEN_SECRET')
 
 TERMS = '#Christmas'
 
+
 class Twitter:
     """Twitter controller class"""
     def __init__(self, led_list):
@@ -33,4 +34,3 @@ class Twitter:
         """Stop Twitter stream"""
         if self.event_thread:
             self.event_thread.set()
-    

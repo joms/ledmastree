@@ -73,6 +73,11 @@ def twitter(state):
     """Activate or deactivate twitter integration"""
     return jsonify(CONTROLLER.set_twitter(state))
 
+@APP.route('/ledmastree/api/v1/kafka/<string:state>', methods=['GET'])
+def kafka(state):
+    """Activate or deactivate kafka integration"""
+    return jsonify(CONTROLLER.set_kafka(state))
+
 if __name__ == '__main__':
     APP.run(debug=True)
 
