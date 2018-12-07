@@ -10,8 +10,10 @@ class Led:
 
         if pwm:
             self.pwm = GPIO.PWM(id_, 50)
+            self.brightness = 50
         else:
             self.pwm = pwm
+            self.brightness = 0
 
         self.id_ = id_
         self.state = GPIO.LOW
@@ -66,12 +68,12 @@ class Led:
 
     def _pwm_on(self):
         for dc in range(0, 101, 5):
-            self.pwm.ChangeDutyCycle(dc)
+            self.set_brightness(dc)
             time.sleep(0.01)
 
     def _pwm_off(self):
         for dc in range(100, -1, -5):
-            self.pwm.ChangeDutyCycle(dc)
+            self.set_brightness(dc)
             time.sleep(0.01)
 
     def get_status(self):
@@ -100,3 +102,10 @@ class Led:
             GPIO.output(self.id_, self.state)
 
         return self.get_status()
+
+    def set_brightness(self, brightness):
+        """Set the brightness of a PWM enabled LED, and update the local state"""
+        if (self.pwm):
+            self.brightness = brightness
+            self.pwm.ChangeDutyCycle(brightness)
+

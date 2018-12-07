@@ -8,7 +8,7 @@ load_dotenv(find_dotenv())
 
 KAFKA_HOSTS = os.environ.get('KAFKA_HOSTS_CSV', '').split(';')
 KAFKA_TOPICS = os.environ.get('KAFKA_TOPICS', '').split(';')
-KAFKA_CONSUMER_GROUP = os.environ.get('KAFKA_CONSUMER_GROUP')
+KAFKA_CONSUMER_GROUP = os.environ.get('KAFKA_CONSUMER_GROUP', 'rpi')
 
 
 class Kafka:
@@ -23,9 +23,9 @@ class Kafka:
         if self.event_thread:
             self.event_thread.clear()
 
-        self.event_thread = threading.event()
+        self.event_thread = threading.Event()
         self.thread = threading.Thread(target=Listener, args=(self.event_thread, KAFKA_HOSTS, KAFKA_TOPICS, KAFKA_CONSUMER_GROUP, self.led_list))
-
+        self.thread.start()
 
     def stop_kafka(self):
         """Stop kafka listener"""
